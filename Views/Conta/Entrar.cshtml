@@ -1,0 +1,68 @@
+@model DadosAcesso
+@{
+    Layout = "_EstruturaAcesso";
+    ViewData["Titulo"] = "Entrar";
+}
+<div class="acesso-estrutura">
+    <aside class="acesso-lateral">
+        <div>
+            <a class="marca" href="/" aria-label="Recompensa Escolar">
+                <span class="marca-simbolo"><i class="fa-solid fa-graduation-cap" aria-hidden="true"></i></span>
+                <span>Recompensa<strong>Escolar<span class="marca-ponto">.</span></strong><small>Sonho • Estudo • Conquista</small></span>
+            </a>
+            <div class="acesso-secundario">
+                <span class="acesso-sobretitulo">ACOMPANHAMENTO EM FAMÍLIA</span>
+                <h2>Educação hoje, grandes sonhos amanhã!</h2>
+                <p>Um espaço para acompanhar o desempenho das suas filhas e celebrar cada conquista.</p>
+                <ul class="acesso-recursos">
+                    <li><i class="fa-solid fa-users" aria-hidden="true"></i> Uma jornada para cada filha</li>
+                    <li><i class="fa-solid fa-book-open" aria-hidden="true"></i> Boletins e notas por disciplina</li>
+                    <li><i class="fa-solid fa-chart-line" aria-hidden="true"></i> Evolução a cada semestre</li>
+                    <li><i class="fa-solid fa-gift" aria-hidden="true"></i> Recompensas que incentivam</li>
+                </ul>
+            </div>
+        </div>
+        <div class="acesso-rodape">Juntos por um futuro ainda mais brilhante!</div>
+    </aside>
+    <div class="acesso-painel">
+        <main class="acesso-principal">
+            <div class="acesso-cartao">
+                <div class="acesso-autenticacao-icone"><i class="fa-solid fa-user-lock" aria-hidden="true"></i></div>
+                <span class="acesso-sobretitulo">BEM-VINDO DE VOLTA</span>
+                <h1>Acessar o sistema</h1>
+                <p class="subtitulo">Informe seu e-mail e senha para continuar.</p>
+                <form asp-controller="Conta" asp-action="Entrar" method="post">
+                    <input type="hidden" name="urlRetorno" value="@ViewBag.UrlRetorno" />
+                    <div asp-validation-summary="ModelOnly" class="erro mb-3" role="alert"></div>
+                    <div class="mb-3">
+                        <label asp-for="Email">E-mail</label>
+                        <div class="campo">
+                            <span><i class="fa-solid fa-envelope" aria-hidden="true"></i></span>
+                            <input asp-for="Email" type="email" placeholder="seu@email.com" autocomplete="username" required />
+                        </div>
+                        <span asp-validation-for="Email" class="erro"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label for="Senha">Senha</label>
+                        <div class="campo">
+                            <span><i class="fa-solid fa-lock" aria-hidden="true"></i></span>
+                            <input name="Senha" id="Senha" type="password" placeholder="Sua senha" autocomplete="current-password" required />
+                        </div>
+                        <span asp-validation-for="Senha" class="erro"></span>
+                    </div>
+                    <label class="acesso-lembrar">
+                        <input asp-for="LembrarMe" />
+                        <span>Lembrar-me</span>
+                    </label>
+                    <button type="submit" class="acesso-botao">Entrar no sistema <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></button>
+                </form>
+                @if (ViewBag.Demonstracao == true)
+                {
+                    <div class="demonstracao-credenciais"><i class="fa-solid fa-flask" aria-hidden="true"></i><div><strong>Ambiente de demonstração</strong><span>admin@admin.com · senha: admin</span></div></div>
+                }
+                <div class="acesso-orientacao">Versão: 1.0.0</div>
+            </div>
+        </main>
+    </div>
+</div>
+

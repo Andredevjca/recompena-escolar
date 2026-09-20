@@ -1,0 +1,15 @@
+@model ModeloPainel
+@{
+    var todos = ViewContext.RouteData.Values["action"]?.ToString() == "Historico";
+    var linhas = Model.Boletins.OrderByDescending(r => Model.Semestres.First(s => s.Id == r.SemestreId).Ano).ThenByDescending(r => Model.Semestres.First(s => s.Id == r.SemestreId).Numero).ThenBy(r=>r.FilhaId);
+}
+<div class="table-responsive"><table class="table historico-tabela"><thead><tr><th>Período</th><th>Filha</th><th>Média</th><th>Recompensa</th><th>Status</th></tr></thead><tbody>
+@foreach(var boletim in linhas.Take(todos ? int.MaxValue : 4)){
+    var semestre = Model.Semestres.First(s=>s.Id==boletim.SemestreId);
+    var filha = Model.Filhas.First(d=>d.Id==boletim.FilhaId);
+    <tr><td>@semestre.Ano <span class="discreto">• @(semestre.Numero)º</span></td><td><a asp-controller="Filhas" asp-action="Detalhes" asp-route-id="@filha.Id" asp-route-semestre="@semestre.Id"><span class="mini-avatar @(filha.Id % 2 == 0 ? "rosa" : "")">@filha.Nome[0]</span>@filha.Nome</a></td><td><strong>@boletim.MediaGeral.ToString("N2")</strong></td><td>@boletim.Valor.ToString("C")</td><td><span class="etiqueta-suave @(boletim.Pago ? "pago" : "pendente")"><i class="fa-solid @(boletim.Pago ? "fa-check" : "fa-clock")" aria-hidden="true"></i> @(boletim.Pago ? "Pago" : "Pendente")</span></td></tr>
+}
+@if(!Model.Boletins.Any()){<tr><td colspan="5" class="text-center p-4">Nenhum boletim lançado ainda.</td></tr>}
+</tbody></table></div>
+
+

@@ -1,0 +1,304 @@
+/* Login: mesma tipografia e paleta do painel. */
+body.acesso-corpo {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--fundo-pagina);
+    color: #1f2a37;
+    font-family: var(--bs-body-font-family);
+    display: grid;
+    place-items: center;
+    padding: 40px 24px;
+}
+
+.acesso-estrutura {
+    width: 100%;
+    max-width: 960px;
+    min-height: 580px;
+    display: grid;
+    grid-template-columns: 0.95fr 1.05fr;
+    overflow: hidden;
+    border: 1px solid #e0e6ed;
+    border-radius: var(--raio);
+    background: #fff;
+    box-shadow: 0 16px 48px rgba(21, 32, 51, .08);
+}
+
+.acesso-lateral {
+    padding: 36px;
+    background: linear-gradient(155deg, #152033 55%, #253d67);
+    color: #d7e0ea;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 32px;
+}
+
+.acesso-marca {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+    .acesso-marca strong {
+        display: block;
+        color: #fff;
+        font-weight: 700;
+    }
+
+    .acesso-marca small {
+        color: #a4b4c6;
+    }
+
+.acesso-simbolo, .acesso-autenticacao-icone {
+    width: 32px;
+    height: 32px;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    border-radius: var(--raio-botao);
+}
+
+.acesso-simbolo {
+    background: var(--menu-ativo);
+    color: #fff;
+}
+
+.acesso-secundario {
+    margin-top: 64px;
+}
+
+.acesso-sobretitulo {
+    display: block;
+    font-size: var(--tamanho-fonte);
+    font-weight: 700;
+    letter-spacing: .08em;
+    color: #526173;
+    margin-bottom: 10px;
+}
+
+.acesso-lateral .acesso-sobretitulo {
+    color: #a9bfe8;
+}
+
+.acesso-lateral h2 {
+    color: #fff;
+    font-size: var(--tamanho-titulo);
+    font-weight: 700;
+    margin: 0 0 12px;
+}
+
+.acesso-lateral p {
+    color: #a4b4c6;
+    line-height: 1.8;
+    margin: 0;
+}
+
+.acesso-recursos {
+    list-style: none;
+    padding: 0;
+    margin: 28px 0 0;
+    display: grid;
+    gap: 16px;
+}
+
+    .acesso-recursos li {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .acesso-recursos i {
+        color: #a9bfe8;
+    }
+
+.acesso-rodape {
+    border-top: 1px solid rgba(255,255,255,.12);
+    padding-top: 20px;
+    color: #a4b4c6;
+}
+
+.acesso-painel {
+    display: flex;
+    min-width: 0;
+}
+
+.acesso-principal {
+    display: grid;
+    align-items: center;
+    width: 100%;
+    padding: 44px;
+}
+
+.acesso-cartao {
+    width: 100%;
+    border-radius: var(--raio);
+}
+
+.acesso-autenticacao-icone {
+    background: #edf2fb;
+    color: var(--menu-ativo);
+    margin-bottom: 20px;
+}
+
+.acesso-cartao h1 {
+    font-size: var(--tamanho-titulo);
+    font-weight: 700;
+    margin: 0 0 8px;
+}
+
+.acesso-cartao .subtitulo {
+    color: #6b7c90;
+    margin-bottom: 28px;
+}
+
+.acesso-cartao label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.acesso-cartao .campo {
+    display: flex;
+    border: 1px solid #d7e0ea;
+    border-radius: var(--raio-campo);
+    overflow: hidden;
+    margin-bottom: 4px;
+    background: #fff;
+}
+
+    .acesso-cartao .campo:focus-within {
+        border-color: #4268b0;
+        box-shadow: none !important;
+    }
+
+    .acesso-cartao .campo > span {
+        width: 36px;
+        flex-shrink: 0;
+        display: grid;
+        place-items: center;
+        color: #6b7c90;
+    }
+
+    .acesso-cartao .campo input {
+        width: 100%;
+        min-width: 0;
+        border: 0;
+        outline: none;
+        padding: 9px 10px 9px 0;
+        background: transparent;
+        color: inherit;
+        font: inherit;
+    }
+
+        .acesso-cartao .campo input::placeholder {
+            color: #8ea0b5;
+        }
+
+.acesso-cartao .erro {
+    color: #b42318;
+}
+
+    .acesso-cartao .erro ul {
+        padding-left: 18px;
+        margin-bottom: 0;
+    }
+
+.acesso-cartao .acesso-lembrar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 18px 0;
+    font-weight: 400;
+    cursor: pointer;
+}
+
+.acesso-lembrar input {
+    accent-color: var(--menu-ativo);
+}
+
+.acesso-botao {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    border: 0;
+    border-radius: var(--raio-botao);
+    padding: 8px 10px;
+    background: var(--menu-ativo);
+    color: #fff;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+    .acesso-botao:hover {
+        background: #203b70;
+    }
+
+    .acesso-botao:focus-visible {
+        outline: 2px solid #4268b0;
+        outline-offset: 3px;
+    }
+
+.acesso-orientacao {
+    padding: 12px;
+    padding-right: 0 !important;
+    color: #6b7c90;
+    line-height: 1.8;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    font-size: 10px;
+}
+
+@media (max-width: 767.98px) {
+    body.acesso-corpo {
+        padding: 20px 16px;
+    }
+
+    .acesso-estrutura {
+        max-width: 440px;
+        grid-template-columns: 1fr;
+        min-height: auto;
+    }
+
+    .acesso-lateral {
+        padding: 24px;
+    }
+
+    .acesso-secundario, .acesso-rodape {
+        display: none;
+    }
+
+    .acesso-principal {
+        padding: 28px 24px;
+    }
+}
+
+/* Adaptação do layout de referência à identidade Recompensa Escolar. */
+.acesso-corpo .acesso-principal { position: static; min-height: 0; }
+.acesso-corpo .acesso-rodape {
+    position: static; bottom: auto; font-size: 12px;
+    letter-spacing: 0;
+}
+.acesso-corpo .acesso-lateral { background: #152033; }
+.acesso-corpo .marca { font-size: 18px; }
+.acesso-corpo .marca strong { font-size: 23px; }
+.acesso-corpo .marca small { font-size: 11px; }
+.acesso-corpo .acesso-cartao h1 { line-height: 1.5; }
+.acesso-corpo .acesso-secundario h2 { line-height: 1.6; }
+.acesso-corpo .demonstracao-credenciais {
+    display: flex; align-items: flex-start; gap: 10px;
+    background: #f3f5f8; color: #6b7c90; border-radius: 4px;
+    padding: 12px; margin-top: 20px; font-size: 11px;
+}
+.acesso-corpo .demonstracao-credenciais > i { margin-top: 3px; }
+.acesso-corpo .demonstracao-credenciais strong,
+.acesso-corpo .demonstracao-credenciais span { display: block; line-height: 1.8; }
+.acesso-corpo .acesso-lembrar input { margin: 0; }
+.acesso-corpo .acesso-recursos i { width: 15px; text-align: center; }
+.acesso-corpo .acesso-cartao .campo:focus-within { outline: 2px solid #4268b0; outline-offset: 2px; }
+@media (max-width: 767.98px) {
+    .acesso-corpo .acesso-principal { min-height: 0; }
+}

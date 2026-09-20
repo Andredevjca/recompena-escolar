@@ -1,0 +1,31 @@
+@model ModeloPainel
+@{
+    ViewData["Titulo"] = "Regras de recompensa"; var regras = Model.Regras.OrderBy(x => x.MediaMinima).ToList();
+}
+<div class="pagina-cabecalho">
+    <div><span class="sobretitulo">UM COMBINADO PARA CRESCER</span>
+        <h2>Regras de recompensa</h2>
+        <p>Defina o incentivo para cada faixa de média.</p>
+    </div>
+</div>
+<section class="cartao formulario-cartao amplo-formulario">
+    <div class="informacao-mensagem"><i class="fa-solid fa-circle-info" aria-hidden="true"></i>
+        <p>A maior faixa alcançada define a recompensa. Alterações valem para novos boletins; valores já calculados e
+            pagamentos ficam preservados.</p>
+        </div>
+        @for (var i = 0; i < regras.Count; i++)
+        {
+            var regra = regras[i];
+            <form class="regra-linha" asp-controller="Regras" asp-action="SalvarRegra" method="post"><input type="hidden" name="id" value="@regra.Id" />
+                <div><strong>@(i==regras.Count-1 ? $"Média {regra.MediaMinima:N2}" : $"De {regra.MediaMinima:N2} até menos de                {regras[i+1].MediaMinima:N2}")</strong><small>@(regra.MediaMinima >= 9 ? "Uma conquista para celebrar!"         : "Cada passo tem seu valor.")</small></div>
+                <div class="input-group"><span class="input-group-text">R$</span><input
+                    aria-label="Recompensa para média a partir de @regra.MediaMinima" name="valorRecompensa"
+                    inputmode="decimal" value="@regra.Valor.ToString("F2")" class="form-control" required maxlength="12"
+                    readonly="@(!User.IsInRole("Administrador"))" /></div>@if(User.IsInRole("Administrador")){
+                    <button class="btn btn-primary">Salvar</button>
+                }
+            </form>
+        }
+    </section>
+
+

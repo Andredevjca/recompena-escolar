@@ -1,0 +1,78 @@
+@using System.Security.Claims
+@inject RecompensaEscolar.Interfaces.Servicos.IServicoInicio ServicoInicio
+@{
+    var acao = ViewContext.RouteData.Values["action"]?.ToString() ?? "Inicio";
+    var painel = Model as ModeloPainel ?? await ServicoInicio.ObterPainelAsync();
+    var nomeCompleto = User.Identity?.Name ?? "Responsável";
+    var primeiroNome = nomeCompleto.Split(' ')[0];
+    var menu = new[] { ("Inicio", "house", "Início"), ("Filhas", "users", "Minhas Filhas"), ("Boletins", "book-open", "Boletins"), ("Recompensas", "gift", "Recompensas"), ("Historico", "clock-rotate-left", "Histórico"), ("Regras", "sliders", "Regras") };
+}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#101d38" />
+    <title>@ViewData["Titulo"] · Recompensa Escolar</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/aplicacao.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/tema.css" asp-append-version="true" />
+</head>
+<body>
+<a class="pular-ligacao" href="#conteudo">Pular para o conteúdo</a>
+<button class="menu-lateral-sobreposicao" aria-label="Fechar menu" tabindex="-1"></button>
+<aside class="menu-lateral" id="menu-lateral" aria-label="Menu principal">
+    <a class="marca" asp-controller="Inicio" asp-action="Inicio">
+        <span class="marca-simbolo"><i class="fa-solid fa-graduation-cap" aria-hidden="true"></i></span>
+        <span class="marca-texto">Recompensa<strong>Escolar<span class="marca-ponto">.</span></strong><small>Sonho • Estudo • Conquista</small></span>
+    </a>
+    <div class="navegacao-rotulo">ESPAÇO DA FAMÍLIA</div>
+    <nav>
+        @foreach (var (rota, icone, rotulo) in menu)
+        {
+            <a class="nav-item @(acao == rota || (rota == "Filhas" && acao is "Detalhes" or "NovaFilha") ? "active" : "")" asp-controller="@rota" asp-action="@rota" title="@rotulo" aria-label="@rotulo" aria-current="@(acao == rota ? "page" : null)"><i class="fa-solid fa-@icone" aria-hidden="true"></i><span class="menu-texto">@rotulo</span>@if(acao == rota){<i class="fa-solid fa-chevron-right navegacao-seta" aria-hidden="true"></i>}</a>
+        }
+        @if (User.IsInRole("Administrador"))
+        {
+            <div class="navegacao-divisoria"></div><div class="navegacao-rotulo">ADMINISTRAÇÃO</div>
+            <a class="nav-item @(acao == "Usuarios" ? "active" : "")" asp-controller="Usuarios" asp-action="Usuarios" title="Usuários" aria-label="Usuários"><i class="fa-solid fa-user-group" aria-hidden="true"></i><span class="menu-texto">Usuários</span></a>
+        }
+    </nav>
+    <div class="menu-lateral-mensagem"><i class="fa-regular fa-star" aria-hidden="true"></i><p>Pequenos esforços.<br /><strong>Grandes conquistas.</strong></p><span>O futuro começa em casa.</span></div>
+    <div class="usuario-area">
+        <button class="usuario-alternar" type="button" data-bs-toggle="dropdown" aria-expanded="false"><span class="usuario-avatar">@primeiroNome[0]</span><span class="usuario-texto"><strong>@nomeCompleto</strong><small>@User.FindFirstValue(ClaimTypes.Email)</small></span><i class="fa-solid fa-chevron-down" aria-hidden="true"></i></button>
+        <ul class="dropdown-menu"><li><form asp-controller="Conta" asp-action="Sair" method="post"><button class="dropdown-item" type="submit"><i class="fa-solid fa-arrow-right-from-bracket me-2" aria-hidden="true"></i>Sair da conta</button></form></li></ul>
+    </div>
+</aside>
+<div class="aplicacao-estrutura">
+    <header class="barra-superior">
+        <div class="saudacao-grupo"><button id="alternar-menu" class="icone-botao" aria-label="Alternar menu lateral" aria-controls="menu-lateral" aria-expanded="true"><i class="fa-solid fa-bars" aria-hidden="true"></i></button><div><h1>Olá, @primeiroNome! <i class="fa-regular fa-sun saudacao-icone" aria-hidden="true"></i></h1><p>Acompanhe o desempenho e as recompensas das suas filhas.</p></div></div>
+        <div class="cabecalho-acoes">
+            <div class="dropdown"><button class="icone-botao notificacao-botao" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Notificações"><i class="fa-regular fa-bell" aria-hidden="true"></i>@if(painel.BoletinsAtuais.Any(x => !x.Pago)){<span class="notificacao-ponto"></span>}</button><div class="dropdown-menu dropdown-menu-end notificacao-cartao"><strong>Seu semestre em dia</strong><p>@painel.BoletinsAtuais.Count(x => !x.Pago) recompensa(s) aguardando pagamento.</p><p>@(painel.Filhas.Count - painel.BoletinsAtuais.Count()) boletim(ns) ainda não lançado(s).</p><a asp-controller="Recompensas" asp-action="Recompensas" asp-route-semestre="@painel.SemestreSelecionadoId">Ver recompensas <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a></div></div>
+            <form asp-controller="@(acao is "Detalhes" or "NovaFilha" ? "Filhas" : acao is "Inicio" or "Filhas" or "Recompensas" or "Historico" ? acao : "Inicio")" asp-action="@(acao is "Inicio" or "Filhas" or "Recompensas" or "Detalhes" or "Historico" ? acao : "Inicio")" method="get" class="semestre-seletor">
+                @if(acao == "Detalhes"){<input type="hidden" name="id" value="@ViewContext.RouteData.Values["id"]" />}
+                <i class="fa-regular fa-calendar" aria-hidden="true"></i><label class="visually-hidden" for="semestre">Semestre</label><select name="semestre" id="semestre">
+                @if(!painel.Semestres.Any()){<option value="">Nenhum semestre</option>}
+                @foreach(var semestre in painel.Semestres.OrderByDescending(x=>x.Ano).ThenByDescending(x=>x.Numero)){<option value="@semestre.Id" selected="@(semestre.Id == painel.SemestreSelecionadoId)">@semestre.Descricao</option>}
+                </select><noscript><button type="submit">Aplicar</button></noscript>
+            </form>
+        </div>
+    </header>
+    <main id="conteudo">
+        @if(painel.Demonstracao){<div class="demonstracao-faixa"><span><i class="fa-solid fa-flask" aria-hidden="true"></i> Ambiente de demonstração</span><small>Dados ilustrativos • alterações duram até reiniciar</small></div>}
+        @if(TempData["Sucesso"] is string sucesso){<div class="alert alert-success alert-dismissible fade show" role="status">@sucesso<button class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button></div>}
+        @if(TempData["Erro"] is string erro){<div class="alert alert-danger" role="alert">@erro</div>}
+        @RenderBody()
+    </main>
+    <footer><span>Recompensa Escolar <span class="rodape-versao">— v1.0.0</span></span><span>Juntos por um futuro ainda mais brilhante! <i class="fa-regular fa-heart" aria-hidden="true"></i></span></footer>
+</div>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/aplicacao.js" asp-append-version="true"></script>
+@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
+

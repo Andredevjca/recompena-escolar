@@ -1,0 +1,52 @@
+@model ModeloPainel
+@{
+    ViewData["Titulo"] = "Recompensas";
+}
+<div class="pagina-cabecalho">
+    <div><span class="sobretitulo">INCENTIVO QUE FAZ A DIFERENÇA</span>
+        <h2>Hora de celebrar</h2>
+        <p>Registre os pagamentos das recompensas de @Model.SemestreSelecionado?.Descricao.</p>
+    </div>
+</div>
+<div class="recompensa-resumo cartao">
+    <div><span>Total previsto</span><strong>@Model.Total.ToString("C")</strong></div>
+    <div><span>Já celebrado</span><strong>@Model.BoletinsAtuais.Where(x=>x.Pago).Sum(x=>x.Valor).ToString("C")</strong>
+    </div>
+    <div><span>Aguardando
+        pagamento</span><strong>@Model.BoletinsAtuais.Where(x=>!x.Pago).Sum(x=>x.Valor).ToString("C")</strong></div>
+    </div>
+    <section class="cartao">
+        <div class="cartao-cabecalho">
+            <h2>Recompensas do semestre</h2>
+        </div>
+        @foreach (var boletim in Model.BoletinsAtuais)
+        {
+            var filha = Model.Filhas.First(x => x.Id == boletim.FilhaId);
+            <div class="pagamento-linha"><span class="filha-avatar">@filha.Nome[0]</span>
+                <div>
+                    <h3>@filha.Nome</h3>
+                    <p>Média @boletim.MediaGeral.ToString("N2")</p>
+                </div><strong>@boletim.Valor.ToString("C")</strong>@if(boletim.Pago){
+                <span class="etiqueta-suave pago"><i
+                    class="fa-solid fa-check" aria-hidden="true"></i> Pago</span>
+                }else
+                {
+
+                    <form asp-controller="Recompensas" asp-action="Pagar"
+                          method="post" data-confirmacao="Confirmar que o pagamento já foi realizado?"><input type="hidden" name="id"
+                                                                                                            value="@boletim.Id" /><input type="hidden" name="semestre"
+                                                     value="@Model.SemestreSelecionadoId" /><button class="btn btn-primary" type="submit">Registrar
+                        pagamento</button></form>
+                    }
+                </div>
+            }
+            @if (!Model.BoletinsAtuais.Any())
+            {
+                <div class="vazio-estado"><i class="fa-solid fa-gift" aria-hidden="true"></i>
+                    <p>As recompensas aparecerão depois do lançamento dos boletins.</p><a asp-controller="Boletins" asp-action="Boletins">Lançar primeiro
+                    boletim</a>
+                </div>
+            }
+        </section>
+        <p class="formulario-orientacao mt-3">Este registro acompanha um pagamento feito por você; não realiza transferências
+            bancárias.</p>

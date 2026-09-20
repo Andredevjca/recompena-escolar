@@ -1,0 +1,24 @@
+@model ModeloErro
+@{
+    ViewData["Titulo"] = "Não foi possível concluir"; Layout = null;
+}
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Recompensa Escolar</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+</head>
+
+<body>
+    <main class="container py-5">
+        <h1>Não foi possível concluir esta ação.</h1>
+        <p>Tente novamente em alguns instantes. Se o problema continuar, entre em contato com o administrador.</p>
+        <p>Identificador: <code>@Model.IdentificadorRequisicao</code></p><a href="/" class="btn btn-primary">Voltar ao
+        início</a>
+    </main>
+</body>
+
+</html>

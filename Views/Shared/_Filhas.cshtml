@@ -1,0 +1,18 @@
+@model ModeloPainel
+<div class="filha-grade">
+@foreach(var filha in Model.Filhas)
+{
+    var boletim = Model.Atual(filha.Id);
+    var variacao = Model.Variacao(filha.Id);
+    var rosa = filha.Id % 2 == 0;
+    <article class="cartao filha-cartao @(rosa ? "filha-rosa" : "")">
+        <div class="filha-cabecalho"><span class="filha-avatar" aria-hidden="true">@filha.Nome[0]<i class="fa-solid fa-star"></i></span><div><h3>@filha.Nome</h3><p>@filha.Escolaridade</p></div><span class="semestre-etiqueta">@(Model.SemestreSelecionado?.Numero)º Semestre<br />@Model.SemestreSelecionado?.Ano</span></div>
+        <div class="filha-indicadores"><div><span class="indicador-rotulo"><i class="fa-regular fa-star" aria-hidden="true"></i> Média Geral</span><strong class="media">@(boletim?.MediaGeral.ToString("N2") ?? "—")</strong><span class="variacao @(variacao < 0 ? "negativo" : "")">@(variacao.HasValue ? (variacao >= 0 ? "↑ +" : "↓ ") + variacao.Value.ToString("N2") : "—") <small>vs. semestre anterior</small></span></div><div><span class="indicador-rotulo"><i class="fa-solid fa-gift" aria-hidden="true"></i> Recompensa</span><strong class="recompensa">@(boletim?.Valor.ToString("C") ?? "—")</strong><span class="etiqueta-suave @(boletim?.Pago == true ? "pago" : "prevista")">@(boletim == null ? "Sem boletim" : boletim.Pago ? "Paga" : "Prevista")</span></div></div>
+        <div class="filha-situacao"><span class="situacao-ponto @(boletim?.Pago == true ? "verde-ponto" : "")"></span>@(boletim == null ? "Aguardando lançamento do boletim" : boletim.Pago ? "Recompensa paga. Conquista celebrada!" : "Aguardando pagamento")</div>
+        <div class="progresso-cabecalho"><span>Evolução da média</span><strong>@(boletim?.MediaGeral.ToString("N2") ?? "—") <small>/ 10</small></strong></div><div class="progress" role="progressbar" aria-label="Média de @filha.Nome" aria-valuenow="@((boletim?.MediaGeral ?? 0).ToString(System.Globalization.CultureInfo.InvariantCulture))" aria-valuemin="0" aria-valuemax="10"><div class="progress-bar" style="width: @(((boletim?.MediaGeral ?? 0)*10).ToString(System.Globalization.CultureInfo.InvariantCulture))%"></div></div>
+        <a class="detalhes-botao" asp-controller="Filhas" asp-action="Detalhes" asp-route-id="@filha.Id" asp-route-semestre="@Model.SemestreSelecionadoId"><i class="fa-regular fa-eye" aria-hidden="true"></i> Ver detalhes <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+    </article>
+}
+@if(!Model.Filhas.Any()){<div class="cartao vazio-estado"><i class="fa-solid fa-users" aria-hidden="true"></i><h3>Toda conquista tem um começo</h3><p>Cadastre suas filhas para acompanhar essa jornada.</p><a class="btn btn-primary" asp-controller="Filhas" asp-action="NovaFilha">Cadastrar primeira filha</a></div>}
+</div>
+

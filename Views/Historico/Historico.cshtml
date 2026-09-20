@@ -1,0 +1,16 @@
+@model ModeloPainel
+@{
+    ViewData["Titulo"] = "Histórico";
+}
+<div class="pagina-cabecalho">
+    <div><span class="sobretitulo">MEMÓRIAS DE UMA JORNADA</span>
+        <h2>Cada semestre, uma conquista</h2>
+        <p>Todos os boletins e recompensas, guardados em um só lugar.</p>
+    </div><a asp-controller="Boletins" asp-action="Boletins" class="btn btn-primary">Lançar boletim</a>
+</div>
+<section class="cartao">
+    <div class="cartao-cabecalho">
+        <h2>Histórico completo</h2><span class="discreto-rotulo">@Model.Boletins.Count boletins</span>
+    </div>
+    <partial name="_TabelaHistorico" model="Model" />
+</section>

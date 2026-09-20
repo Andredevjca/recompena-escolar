@@ -1,0 +1,108 @@
+@model ModeloPainel
+@{
+    ViewData["Titulo"] = "Início";
+}
+<section class="destaque">
+    <div class="destaque-texto"><span class="sobretitulo"><span></span> CADA CONQUISTA MERECE SER CELEBRADA</span>
+        <h2>Educação hoje,<br />grandes sonhos <em>amanhã!</em></h2>
+        <p>Cada esforço conta. Veja como suas filhas estão se saindo<br class="quebra-desktop" /> e celebre cada
+            conquista!</p><span class="destaque-assinatura"><i class="fa-regular fa-heart" aria-hidden="true"></i> Um
+            incentivo hoje. Um mundo de possibilidades.</span>
+        </div>
+        <div class="destaque-foto"><img src="~/imagens/estudando.png"
+                                            alt="Duas irmãs estudando juntas em uma mesa iluminada pela luz natural" /><span class="foto-mensagem"><i
+            class="fa-solid fa-star" aria-hidden="true"></i> Crescendo juntas, sonhando alto.</span></div>
+        </section>
+        <div class="painel-grade">
+            <div class="painel-principal">
+                <div class="secao-cabecalho">
+                    <div>
+                        <h2>Pequenas estudantes, grandes conquistas</h2>
+                        <p>Um olhar de carinho para cada jornada.</p>
+                    </div><span class="discreto-rotulo"><i class="fa-regular fa-calendar" aria-hidden="true"></i>
+                    @Model.SemestreSelecionado?.Descricao</span>
+                </div>
+                <partial name="_Filhas" model="Model" />
+                <section class="cartao grafico-cartao">
+                    <div class="cartao-cabecalho">
+                        <div>
+                            <h2><i class="fa-solid fa-chart-line" aria-hidden="true"></i> Evolução das Médias</h2>
+                            <p>Cada semestre, um passo à frente.</p>
+                        </div><span class="grafico-periodo">Ao longo dos semestres</span>
+                    </div>
+                    @if (Model.Boletins.Any())
+                    {
+                        <div class="grafico-legenda">@foreach(var filha in Model.Filhas){
+                            <span><b
+                                style="--cor-serie: @(filha.Id % 2 == 1 ? "#6385bc" : "#b4a0b8")"></b>@filha.Nome</span>
+                            }
+                        </div>
+                        <div id="evolucao-grafico" class="evolucao-grafico" role="img"
+                             aria-label="Gráfico de evolução das médias. Os valores também estão disponíveis no histórico."></div>
+                        <p class="grafico-rodape"><i class="fa-solid fa-arrow-trend-up" aria-hidden="true"></i> O mais importante é
+                            continuar evoluindo, um passo de cada vez.</p>
+                            <script type="application/json"
+                                    id="dados-grafico">@Html.Raw(System.Text.Json.JsonSerializer.Serialize(new { semestres = Model.Semestres.Select(s => new { id = s.Id, descricao = $"{s.Ano}/{s.Numero}" }), series = Model.Filhas.Select(d => new { nome = d.Nome, valores = Model.Semestres.Select(s => Model.Boletins.FirstOrDefault(r => r.FilhaId == d.Id && r.SemestreId == s.Id)?.MediaGeral) }) }))</script>
+                        } else
+                        {
+
+                            <div class="vazio-estado"><i class="fa-solid fa-seedling" aria-hidden="true"></i>
+                                <p>A evolução começa com o primeiro boletim.</p><a asp-controller="Boletins" asp-action="Boletins">Lançar boletim</a>
+                            </div>
+                        }
+                    </section>
+                    <section class="cartao historico-cartao">
+                        <div class="cartao-cabecalho">
+                            <h2><i class="fa-solid fa-clock-rotate-left" aria-hidden="true"></i> Últimos Semestres</h2><a
+                            asp-controller="Historico" asp-action="Historico" class="texto-ligacao">Ver todos <i class="fa-solid fa-arrow-right"
+                                                                                      aria-hidden="true"></i></a>
+                        </div>
+                        <partial name="_TabelaHistorico" model="Model" />
+                    </section>
+                </div>
+                <aside class="painel-lateral" aria-label="Resumo e ações">
+                    <section class="cartao resumo-cartao">
+                        <div class="cartao-cabecalho">
+                            <h2><span class="pequeno-icone"><i class="fa-solid fa-wallet" aria-hidden="true"></i></span> Resumo do
+                                Semestre</h2>
+                            </div>
+                            <div class="resumo-periodo">@Model.SemestreSelecionado?.Descricao</div>
+                            <div class="resumo-linha"><span>Total de filhas</span><strong>@Model.Filhas.Count.ToString("00")</strong>
+                            </div>
+                            <div class="total-recompensa"><span>Recompensa total
+                                prevista</span><strong>@Model.Total.ToString("C")</strong><small><i class="fa-solid fa-gift"
+                                                                                                    aria-hidden="true"></i> Esforço que se transforma em conquista</small></div>
+                                <div class="resumo-situacao"><span class="situacao-ponto"></span>@Model.BoletinsAtuais.Count(x=>!x.Pago)
+                                    recompensa(s) aguardando pagamento</div>
+                                    <blockquote>“O sucesso não é um destino, é o resultado de pequenos esforços repetidos todos os dias.”
+                                    </blockquote>
+                                </section>
+                                <section class="cartao rapidas-acoes">
+                                    <div class="cartao-cabecalho">
+                                        <h2><i class="fa-solid fa-bolt" aria-hidden="true"></i> Ações rápidas</h2>
+                                    </div>
+                                    <a asp-controller="Boletins" asp-action="Boletins"><span class="acao-icone azul"><i class="fa-solid fa-book-open"
+                                                                                                  aria-hidden="true"></i></span><span>Lançar novo boletim</span><i
+                                        class="fa-solid fa-chevron-right" aria-hidden="true"></i></a>
+                                        <a asp-controller="Filhas" asp-action="NovaFilha"><span class="acao-icone rosa"><i class="fa-solid fa-user-plus"
+                                                                                                       aria-hidden="true"></i></span><span>Cadastrar nova filha</span><i
+                                            class="fa-solid fa-chevron-right" aria-hidden="true"></i></a>
+                                            <a asp-controller="Regras" asp-action="Regras"><span class="acao-icone dourado"><i class="fa-solid fa-sliders"
+                                                                                                           aria-hidden="true"></i></span><span>Regras de recompensa</span><i
+                                                class="fa-solid fa-chevron-right" aria-hidden="true"></i></a>
+                                                @if (User.IsInRole("Administrador"))
+                                                {
+                                                    <a asp-controller="Usuarios" asp-action="Usuarios"><span class="acao-icone verde"><i
+                                                        class="fa-solid fa-user-group" aria-hidden="true"></i></span><span>Gerenciar usuários</span><i
+                                                        class="fa-solid fa-chevron-right" aria-hidden="true"></i></a>
+                                                    }
+                                                </section>
+                                                <section class="dica-cartao"><span class="dica-icone"><i class="fa-regular fa-lightbulb"
+                                                                                                             aria-hidden="true"></i></span>
+                                                    <h2>Dica do dia</h2>
+                                                    <p>“O conhecimento é o maior presente que você pode dar para o seu futuro.”</p><span>Aprender é
+                                                    florescer.</span><i class="fa-solid fa-seedling dica-planta" aria-hidden="true"></i>
+                                                </section>
+                                            </aside>
+                                        </div>
+
