@@ -13,8 +13,8 @@ public class CadastroBoletim
     [Range(2020, 2100, ErrorMessage = "Informe um ano entre 2020 e 2100.")]
     public int Ano { get; set; } = DateTime.Today.Year;
 
-    [Range(1, 2, ErrorMessage = "Selecione o primeiro ou o segundo semestre.")]
-    public int Numero { get; set; } = DateTime.Today.Month <= 6 ? 1 : 2;
+    [Range(1, 4, ErrorMessage = "Selecione um semestre de 1 a 4.")]
+    public int Numero { get; set; } = (DateTime.Today.Month - 1) / 3 + 1;
     public string[] Disciplinas { get; set; } = [];
     public string[] Valores { get; set; } = [];
 }

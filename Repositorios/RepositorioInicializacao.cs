@@ -28,6 +28,7 @@ public class RepositorioInicializacao(IConfiguration configuracao, IWebHostEnvir
         await AtualizadorEstrutura.TraduzirColunasAsync(conexao);
         var estrutura = await File.ReadAllTextAsync(Path.Combine(ambiente.ContentRootPath, "Dados", "estrutura.sql"));
         await conexao.ExecuteAsync(estrutura);
+        await AtualizadorEstrutura.AmpliarSemestresAsync(conexao);
         await conexao.ExecuteAsync("INSERT INTO usuarios (Nome,Email,SenhaHash,Perfil) VALUES (@Nome,@Email,@SenhaHash,'Administrador') ON DUPLICATE KEY UPDATE Id=Id",
             new { Nome = "André da Silva Ramos", Email = "admin@admin.com", SenhaHash = Senhas.Gerar("admin@admin.com", configuracao["SenhaAdministradorInicial"] ?? "admin") });
         await conexao.ExecuteAsync("INSERT IGNORE INTO regras_recompensa (MediaMinima,Valor) VALUES (0,0),(7,100),(8,180),(9,250),(10,300)");

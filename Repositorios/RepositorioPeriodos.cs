@@ -11,7 +11,7 @@ public class RepositorioPeriodos(Banco banco, EstadoDemonstracao estado) {
   return (await c.QueryAsync<PeriodoEscolar>("SELECT p.FilhaId,p.SemestreId,p.Serie,s.Ano,s.Numero FROM periodos_escolares p JOIN semestres s ON s.Id=p.SemestreId ORDER BY s.Ano DESC,s.Numero")).ToList();
  }
  public async Task CadastrarAsync(CadastroPeriodo dados) {
-  var numeros=new[]{dados.Primeiro?1:0,dados.Segundo?2:0}.Where(x=>x>0).ToArray();
+  var numeros=new[]{dados.Primeiro?1:0,dados.Segundo?2:0,dados.Terceiro?3:0,dados.Quarto?4:0}.Where(x=>x>0).ToArray();
   if(numeros.Length==0 || string.IsNullOrWhiteSpace(dados.Serie)) throw new InvalidOperationException("Informe a série e selecione pelo menos um semestre.");
   await estado.Semaforo.WaitAsync();
   try {

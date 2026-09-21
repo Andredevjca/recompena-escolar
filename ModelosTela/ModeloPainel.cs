@@ -19,7 +19,7 @@ public class ModeloPainel
     {
         var atual = Atual(filhaId);
         var selecionado = SemestreSelecionado;
-        var identificadoresAnteriores = Semestres.Where(x => selecionado != null && x.Ano * 2 + x.Numero < selecionado.Ano * 2 + selecionado.Numero)
+        var identificadoresAnteriores = Semestres.Where(x => selecionado != null && (x.Ano < selecionado.Ano || (x.Ano == selecionado.Ano && x.Numero < selecionado.Numero)))
             .OrderByDescending(x => x.Ano).ThenByDescending(x => x.Numero).Select(x => x.Id);
         var anterior = identificadoresAnteriores.Select(id => Boletins.FirstOrDefault(r => r.FilhaId == filhaId && r.SemestreId == id)).FirstOrDefault(r => r != null);
         return atual == null || anterior == null ? null : atual.MediaGeral - anterior.MediaGeral;

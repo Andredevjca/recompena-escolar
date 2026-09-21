@@ -31,6 +31,31 @@ public static class AtualizadorEstrutura
         ("pagamentos", "PaidAt", "DataPagamento")
     ];
 
+    public static async Task AmpliarSemestresAsync(MySqlConnection conexao)
+    {
+        var restricoes = await conexao.QueryAsync<RestricaoSemestre>("""
+            SELECT c.CONSTRAINT_NAME Nome, c.CHECK_CLAUSE Clausula
+            FROM information_schema.CHECK_CONSTRAINTS c
+            JOIN information_schema.TABLE_CONSTRAINTS t
+              ON t.CONSTRAINT_SCHEMA=c.CONSTRAINT_SCHEMA AND t.CONSTRAINT_NAME=c.CONSTRAINT_NAME
+            WHERE t.TABLE_SCHEMA=DATABASE() AND t.TABLE_NAME='semestres' AND t.CONSTRAINT_TYPE='CHECK'
+            """);
+        foreach (var restricao in restricoes)
+        {
+            var clausula = System.Text.RegularExpressions.Regex.Replace(restricao.Clausula, @"[\s`()]", "").ToLowerInvariant();
+            if (clausula != "numeroin1,2") continue;
+            // Identificador obtido dos metadados e escapado; troca atômica sem remover registros.
+            var nome = restricao.Nome.Replace("`", "``");
+            await conexao.ExecuteAsync($"ALTER TABLE semestres DROP CHECK `{nome}`, ADD CONSTRAINT `{nome}` CHECK (Numero IN (1,2,3,4))");
+        }
+    }
+
+    private sealed class RestricaoSemestre
+    {
+        public string Nome { get; set; } = "";
+        public string Clausula { get; set; } = "";
+    }
+
     public static async Task TraduzirColunasAsync(MySqlConnection conexao)
     {
         foreach (var (tabela, nomeAnterior, nomeAtual) in Alteracoes)
