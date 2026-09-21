@@ -35,3 +35,10 @@ CREATE TABLE IF NOT EXISTS pagamentos (
  DataPagamento DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
  FOREIGN KEY (RecompensaId) REFERENCES recompensas(Id), FOREIGN KEY (UsuarioId) REFERENCES usuarios(Id)
 ) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS periodos_escolares (
+ FilhaId INT NOT NULL, SemestreId INT NOT NULL, Serie VARCHAR(100) NOT NULL,
+ PRIMARY KEY (FilhaId, SemestreId), FOREIGN KEY (FilhaId) REFERENCES filhas(Id), FOREIGN KEY (SemestreId) REFERENCES semestres(Id)
+) ENGINE=InnoDB;
+INSERT IGNORE INTO periodos_escolares (FilhaId,SemestreId,Serie)
+ SELECT b.FilhaId,b.SemestreId,f.Escolaridade FROM boletins b JOIN filhas f ON f.Id=b.FilhaId;

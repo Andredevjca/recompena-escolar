@@ -5,7 +5,7 @@
     var painel = Model as ModeloPainel ?? await ServicoInicio.ObterPainelAsync();
     var nomeCompleto = User.Identity?.Name ?? "Responsável";
     var primeiroNome = nomeCompleto.Split(' ')[0];
-    var menu = new[] { ("Inicio", "house", "Início"), ("Filhas", "users", "Minhas Filhas"), ("Boletins", "book-open", "Boletins"), ("Recompensas", "gift", "Recompensas"), ("Historico", "clock-rotate-left", "Histórico"), ("Regras", "sliders", "Regras") };
+    var menu = new[] { ("Inicio", "house", "Início"), ("Filhas", "users", "Minhas Filhas"), ("Periodos", "calendar-days", "Séries e semestres"), ("Boletins", "book-open", "Boletins"), ("Recompensas", "gift", "Recompensas"), ("Historico", "clock-rotate-left", "Histórico"), ("Regras", "sliders", "Regras") };
 }
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -42,10 +42,7 @@
             <a class="nav-item @(acao == "Usuarios" ? "active" : "")" asp-controller="Usuarios" asp-action="Usuarios" title="Usuários" aria-label="Usuários"><i class="fa-solid fa-user-group" aria-hidden="true"></i><span class="menu-texto">Usuários</span></a>
         }
     </nav>
-    <div class="usuario-area">
-        <button class="usuario-alternar" type="button" data-bs-toggle="dropdown" aria-expanded="false"><span class="usuario-avatar">@primeiroNome[0]</span><span class="usuario-texto"><strong>@nomeCompleto</strong><small>@User.FindFirstValue(ClaimTypes.Email)</small></span><i class="fa-solid fa-chevron-down" aria-hidden="true"></i></button>
-        <ul class="dropdown-menu"><li><form asp-controller="Conta" asp-action="Sair" method="post"><button class="dropdown-item" type="submit"><i class="fa-solid fa-arrow-right-from-bracket me-2" aria-hidden="true"></i>Sair da conta</button></form></li></ul>
-    </div>
+
 </aside>
 <div class="aplicacao-estrutura">
     <header class="barra-superior">
@@ -59,6 +56,10 @@
                 @foreach(var semestre in painel.Semestres.OrderByDescending(x=>x.Ano).ThenByDescending(x=>x.Numero)){<option value="@semestre.Id" selected="@(semestre.Id == painel.SemestreSelecionadoId)">@semestre.Descricao</option>}
                 </select><noscript><button type="submit">Aplicar</button></noscript>
             </form>
+    <div class="usuario-topo dropdown">
+        <button class="usuario-alternar" type="button" data-bs-toggle="dropdown" aria-expanded="false"><span class="usuario-avatar">@primeiroNome[0]</span><span class="usuario-texto"><strong>@nomeCompleto</strong><small>@User.FindFirstValue(ClaimTypes.Email)</small></span><i class="fa-solid fa-chevron-down" aria-hidden="true"></i></button>
+        <ul class="dropdown-menu dropdown-menu-end"><li><form asp-controller="Conta" asp-action="Sair" method="post"><button class="dropdown-item" type="submit"><i class="fa-solid fa-arrow-right-from-bracket me-2" aria-hidden="true"></i>Sair da conta</button></form></li></ul>
+    </div>
         </div>
     </header>
     <main id="conteudo" tabindex="-1">

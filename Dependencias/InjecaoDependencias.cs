@@ -12,6 +12,7 @@ public static class InjecaoDependencias
     public static IServiceCollection AdicionarDependencias(this IServiceCollection servicos)
     {
         servicos.AddSingleton<Banco>();
+        servicos.AddScoped<RepositorioPeriodos>();
         servicos.AddSingleton<EstadoDemonstracao>();
         servicos.AddScoped<IRepositorioPainel, RepositorioPainel>();
         servicos.AddScoped<IRepositorioConta, RepositorioConta>();

@@ -1,0 +1,25 @@
+@model CadastroPeriodo
+@{ ViewData["Titulo"] = "Séries e semestres"; }
+<div class="pagina-cabecalho"><div><h2>Séries e semestres</h2><p>Cadastre os períodos de cada filha e lance as notas quando estiverem disponíveis.</p></div></div>
+<section class="cartao formulario-cartao mb-4">
+<form asp-action="Periodos" method="post">
+<div asp-validation-summary="All" class="text-danger" role="alert"></div>
+<div class="row g-3">
+<div class="col-md-4"><label asp-for="FilhaId">Filha</label><select asp-for="FilhaId" class="form-select" required><option value="">Selecione</option>@foreach(var filha in Model.Filhas){<option value="@filha.Id">@filha.Nome</option>}</select></div>
+<div class="col-md-5"><label asp-for="Serie">Série</label><input asp-for="Serie" class="form-control" placeholder="Ex.: 6º ano do Ensino Fundamental" maxlength="100" required /></div>
+<div class="col-md-3"><label asp-for="Ano">Ano letivo</label><input asp-for="Ano" class="form-control" min="2020" max="2100" required /></div>
+</div>
+<fieldset class="mt-3"><legend class="fs-6">Semestres da série</legend><div class="d-flex gap-4"><label><input asp-for="Primeiro" /> 1º semestre</label><label><input asp-for="Segundo" /> 2º semestre</label></div></fieldset>
+<div class="formulario-acoes"><button type="submit" class="btn btn-primary">Cadastrar série e semestres</button></div>
+</form>
+</section>
+<section class="cartao formulario-cartao"><h3>Períodos cadastrados</h3>
+@if(!Model.Periodos.Any()){<p>Nenhum período cadastrado. Selecione uma filha acima para começar.</p>}
+else {<div class="table-responsive"><table class="table align-middle"><thead><tr><th>Filha</th><th>Série</th><th>Ano</th><th>Semestre</th><th>Notas</th></tr></thead><tbody>
+@foreach(var periodo in Model.Periodos){var boletim = Model.Boletins.FirstOrDefault(x => x.FilhaId == periodo.FilhaId && x.SemestreId == periodo.SemestreId);
+<tr><td>@Model.Filhas.FirstOrDefault(x => x.Id == periodo.FilhaId)?.Nome</td><td>@periodo.Serie</td><td>@periodo.Ano</td><td>@periodo.Numero º semestre</td><td>
+@if(boletim == null){<a class="btn btn-primary btn-sm" asp-controller="Boletins" asp-action="Boletins" asp-route-filhaId="@periodo.FilhaId" asp-route-semestreId="@periodo.SemestreId">Lançar notas</a>}
+else{<a asp-controller="Filhas" asp-action="Detalhes" asp-route-id="@periodo.FilhaId" asp-route-semestre="@periodo.SemestreId">Ver boletim</a>}
+</td></tr>}
+</tbody></table></div>}
+</section>

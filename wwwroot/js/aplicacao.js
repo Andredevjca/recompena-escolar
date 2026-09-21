@@ -123,3 +123,16 @@
     inicializarPagina();
 })();
 
+
+(() => {
+ function filtrarPeriodos() {
+  const filha=document.getElementById('FilhaId'),select=document.getElementById('periodo-boletim');
+  if(!filha || !select) return;
+  const valor = select.value;
+  for(const option of select.options) { if(!option.dataset.filha) continue; option.hidden=option.disabled=option.dataset.filha!==filha.value; }
+  const indice = [...select.options].findIndex(option => option.value === valor && option.dataset.filha === filha.value);
+  select.selectedIndex = indice >= 0 ? indice : 0;
+ }
+ document.addEventListener('change',event=>{if(event.target.id==='FilhaId') filtrarPeriodos();});
+ document.addEventListener('app:navigated',filtrarPeriodos); filtrarPeriodos();
+})();

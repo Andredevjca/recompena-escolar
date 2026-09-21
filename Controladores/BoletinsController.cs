@@ -6,17 +6,19 @@ using RecompensaEscolar.Interfaces.Servicos;
 namespace RecompensaEscolar.Controladores;
 
 [Authorize]
-public class BoletinsController(IServicoBoletins servico) : Controller
+public class BoletinsController(IServicoBoletins servico, RecompensaEscolar.Repositorios.RepositorioPeriodos periodos) : Controller
 {
-    public async Task<IActionResult> Boletins()
+    public async Task<IActionResult> Boletins(int? filhaId, int? semestreId)
     {
         ViewBag.Filhas = await servico.ListarFilhasAsync();
-        return View(new CadastroBoletim());
+        ViewBag.Periodos = await periodos.ListarAsync();
+        return View(new CadastroBoletim { FilhaId = filhaId ?? 0, SemestreId = semestreId ?? 0 });
     }
     [HttpPost]
     public async Task<IActionResult> Boletins(CadastroBoletim dados)
     {
         ViewBag.Filhas = await servico.ListarFilhasAsync();
+        ViewBag.Periodos = await periodos.ListarAsync();
         if (ModelState.IsValid)
         {
             try

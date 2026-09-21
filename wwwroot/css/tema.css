@@ -218,3 +218,13 @@ input:focus, select:focus, textarea:focus,
 }
 #conteudo[aria-busy="true"] { opacity: .65; cursor: progress; }
 #conteudo:focus { outline: none; }
+
+.usuario-topo { min-width: 0; }
+.usuario-topo .usuario-alternar { color: var(--texto); gap: 8px; }
+.usuario-topo .usuario-texto { display: block; text-align: left; }
+.usuario-topo .usuario-texto strong { color: var(--texto); white-space: normal; }
+.usuario-topo .usuario-texto small { color: var(--texto-suave); }
+.usuario-topo .usuario-avatar { width: 30px; height: 30px; background: #e3eaf6; color: var(--menu-ativo); }
+.usuario-topo .usuario-alternar > i { display: inline-block; color: var(--texto-suave); }
+@media (max-width: 1100px) { .saudacao-grupo p { display: none; } .barra-superior { height: auto; min-height: 64px; flex-wrap: wrap; gap: 10px; padding-top: 10px; padding-bottom: 10px; } }
+@media (max-width: 600px) { .cabecalho-acoes { flex-wrap: wrap; gap: 10px; } .usuario-topo .usuario-texto small { display: none; } }

@@ -6,12 +6,15 @@ using RecompensaEscolar.ModelosTela;
 
 namespace RecompensaEscolar.Servicos;
 
-public class ServicoBoletins(IRepositorioBoletins repositorio) : IServicoBoletins
+public class ServicoBoletins(IRepositorioBoletins repositorio, RecompensaEscolar.Repositorios.RepositorioPeriodos periodos) : IServicoBoletins
 {
     public async Task<List<Filha>> ListarFilhasAsync() => (await repositorio.ObterPainelAsync()).Filhas;
 
     public async Task CadastrarAsync(CadastroBoletim dados)
     {
+        var periodo = (await periodos.ListarAsync()).FirstOrDefault(x => x.FilhaId == dados.FilhaId && x.SemestreId == dados.SemestreId)
+            ?? throw new InvalidOperationException("Selecione um semestre cadastrado para esta filha.");
+        dados.Ano = periodo.Ano; dados.Numero = periodo.Numero;
         if (dados.Ano is < 2020 or > 2100 || dados.Numero is < 1 or > 2)
             throw new InvalidOperationException("Informe um ano entre 2020 e 2100 e um semestre válido.");
 

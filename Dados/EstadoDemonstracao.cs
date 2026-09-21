@@ -8,6 +8,7 @@ namespace RecompensaEscolar.Dados;
 public sealed class EstadoDemonstracao
 {
     public SemaphoreSlim Semaforo { get; } = new(1, 1);
+    public List<PeriodoEscolar> Periodos { get; } = [];
     public ModeloPainel Painel { get; } = new();
     public List<UsuarioEscolar> Usuarios { get; } = [];
     public Dictionary<int, List<Nota>> Notas { get; } = [];
@@ -22,6 +23,7 @@ public sealed class EstadoDemonstracao
         foreach (var filha in Painel.Filhas)
             foreach (var semestre in Painel.Semestres)
             {
+                Periodos.Add(new(filha.Id, semestre.Id, filha.Escolaridade, semestre.Ano, semestre.Numero));
                 var media = medias[filha.Id - 1][semestre.Id - 1];
                 var id = Painel.Boletins.Count + 1;
                 Painel.Boletins.Add(new(id, filha.Id, semestre.Id, media, ServicoRecompensas.Calcular(media, Painel.Regras), semestre.Id < 4));
