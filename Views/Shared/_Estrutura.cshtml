@@ -5,7 +5,14 @@
     var painel = Model as ModeloPainel ?? await ServicoInicio.ObterPainelAsync();
     var nomeCompleto = User.Identity?.Name ?? "Responsável";
     var primeiroNome = nomeCompleto.Split(' ')[0];
-    var menu = new[] { ("Inicio", "house", "Início"), ("Filhas", "users", "Minhas Filhas"), ("Periodos", "calendar-days", "Séries e semestres"), ("Boletins", "book-open", "Boletins"), ("Recompensas", "gift", "Recompensas"), ("Historico", "clock-rotate-left", "Histórico"), ("Regras", "sliders", "Regras") };
+    var menu = new[] {
+        ("Inicio", "house", "Início"),
+        ("Filhas", "users", "Minhas Filhas"),
+        ("Periodos", "calendar-days", "Séries e semestres"),
+        ("Boletins", "book-open", "Boletins"),
+        ("Recompensas", "gift", "Recompensas"),
+        ("Historico", "clock-rotate-left", "Histórico"),
+        ("Regras", "sliders", "Regras") };
 }
 <!DOCTYPE html>
 <html lang="pt-BR">
