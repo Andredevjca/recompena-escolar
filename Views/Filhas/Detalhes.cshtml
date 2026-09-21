@@ -4,11 +4,13 @@
     notas = (List<Nota>)ViewBag.Notas;
 }
 <div class="pagina-cabecalho">
-    <div><a class="texto-ligacao" asp-controller="Filhas" asp-action="Filhas"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Minhas
+    <div><a class="texto-ligacao" asp-controller="Filhas" asp-action="Filhas"><i class="fa-solid fa-arrow-left"
+                                                                                     aria-hidden="true"></i> Minhas
         Filhas</a>
         <h2>As conquistas de @filha.Nome</h2>
         <p>@filha.Escolaridade • @Model.SemestreSelecionado?.Descricao</p>
-    </div><a asp-controller="Boletins" asp-action="Boletins" class="btn btn-primary"><i class="fa-solid fa-plus" aria-hidden="true"></i> Lançar
+    </div><a asp-controller="Boletins" asp-action="Boletins" class="btn btn-primary"><i class="fa-solid fa-plus"
+                                                                                        aria-hidden="true"></i> Lançar
     boletim</a>
 </div>
 <div class="detalhe-grade">

@@ -16,8 +16,9 @@
         @for (var i = 0; i < regras.Count; i++)
         {
             var regra = regras[i];
-            <form class="regra-linha" asp-controller="Regras" asp-action="SalvarRegra" method="post"><input type="hidden" name="id" value="@regra.Id" />
-                <div><strong>@(i==regras.Count-1 ? $"Média {regra.MediaMinima:N2}" : $"De {regra.MediaMinima:N2} até menos de                {regras[i+1].MediaMinima:N2}")</strong><small>@(regra.MediaMinima >= 9 ? "Uma conquista para celebrar!"         : "Cada passo tem seu valor.")</small></div>
+            <form class="regra-linha" asp-controller="Regras" asp-action="SalvarRegra" method="post"><input type="hidden"
+                                                                                                                name="id" value="@regra.Id" />
+                <div><strong>@(i==regras.Count-1 ? $"Média {regra.MediaMinima:N2}" : $"De {regra.MediaMinima:N2} até menos de                {regras[i+1].MediaMinima:N2}")</strong><small>@(regra.MediaMinima >= 9 ? "Uma conquista para celebrar!"          : "Cada passo tem seu valor.")</small></div>
                 <div class="input-group"><span class="input-group-text">R$</span><input
                     aria-label="Recompensa para média a partir de @regra.MediaMinima" name="valorRecompensa"
                     inputmode="decimal" value="@regra.Valor.ToString("F2")" class="form-control" required maxlength="12"
