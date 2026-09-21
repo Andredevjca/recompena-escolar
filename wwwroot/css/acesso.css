@@ -124,7 +124,9 @@ body.acesso-corpo {
 
 .acesso-principal {
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     align-items: center;
+    justify-content: stretch;
     width: 100%;
     padding: 44px;
 }
