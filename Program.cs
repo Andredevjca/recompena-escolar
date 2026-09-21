@@ -7,7 +7,6 @@ using RecompensaEscolar.Servicos;
 using RecompensaEscolar.Dependencias;
 
 var construtor = WebApplication.CreateBuilder(args);
-construtor.Configuration.AddJsonFile("appsettings.Local.json", optional: true).AddEnvironmentVariables();
 var protecao = construtor.Services.AddDataProtection().SetApplicationName("RecompensaEscolar")
     .PersistKeysToFileSystem(new DirectoryInfo(Path.Combine(construtor.Environment.ContentRootPath, "Dados", "Chaves")));
 if (OperatingSystem.IsWindows()) protecao.ProtectKeysWithDpapi();

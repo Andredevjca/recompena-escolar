@@ -4,7 +4,7 @@ Aplicação ASP.NET Core MVC (.NET 10), MySQL e Dapper.
 
 ## Executar
 
-Configure ConnectionStrings:MySql em appsettings.Local.json, usando appsettings.Local.example.json como modelo. O arquivo local é ignorado pelo Git e pela publicação. Variáveis de ambiente têm prioridade.
+Configure ConnectionStrings:MySql em appsettings.json. Para trocar o servidor, edite Server, Port, Database, User e Password na conexão e reinicie a aplicação. O arquivo acompanha a publicação. Variáveis de ambiente têm prioridade.
 
 Execute: dotnet run --launch-profile http
 
