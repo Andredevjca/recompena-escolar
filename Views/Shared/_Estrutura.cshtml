@@ -42,7 +42,6 @@
             <a class="nav-item @(acao == "Usuarios" ? "active" : "")" asp-controller="Usuarios" asp-action="Usuarios" title="Usuários" aria-label="Usuários"><i class="fa-solid fa-user-group" aria-hidden="true"></i><span class="menu-texto">Usuários</span></a>
         }
     </nav>
-    <div class="menu-lateral-mensagem"><i class="fa-regular fa-star" aria-hidden="true"></i><p>Pequenos esforços.<br /><strong>Grandes conquistas.</strong></p><span>O futuro começa em casa.</span></div>
     <div class="usuario-area">
         <button class="usuario-alternar" type="button" data-bs-toggle="dropdown" aria-expanded="false"><span class="usuario-avatar">@primeiroNome[0]</span><span class="usuario-texto"><strong>@nomeCompleto</strong><small>@User.FindFirstValue(ClaimTypes.Email)</small></span><i class="fa-solid fa-chevron-down" aria-hidden="true"></i></button>
         <ul class="dropdown-menu"><li><form asp-controller="Conta" asp-action="Sair" method="post"><button class="dropdown-item" type="submit"><i class="fa-solid fa-arrow-right-from-bracket me-2" aria-hidden="true"></i>Sair da conta</button></form></li></ul>
@@ -62,7 +61,7 @@
             </form>
         </div>
     </header>
-    <main id="conteudo">
+    <main id="conteudo" tabindex="-1">
         @if(painel.Demonstracao){<div class="demonstracao-faixa"><span><i class="fa-solid fa-flask" aria-hidden="true"></i> Ambiente de demonstração</span><small>Dados ilustrativos • alterações duram até reiniciar</small></div>}
         @if(TempData["Sucesso"] is string sucesso){<div class="alert alert-success alert-dismissible fade show" role="status">@sucesso<button class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button></div>}
         @if(TempData["Erro"] is string erro){<div class="alert alert-danger" role="alert">@erro</div>}
@@ -72,6 +71,7 @@
 </div>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="~/js/aplicacao.js" asp-append-version="true"></script>
+<script src="~/js/navegacao.js" asp-append-version="true"></script>
 @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

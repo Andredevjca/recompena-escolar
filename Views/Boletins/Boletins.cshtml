@@ -5,7 +5,8 @@
     new[] { "Português", "Matemática", "Ciências", "História", "Geografia" };
 }
 <div class="pagina-cabecalho">
-    <div><span class="sobretitulo">UM NOVO CAPÍTULO DE CONQUISTAS</span>
+    <div>
+        <span class="sobretitulo">UM NOVO CAPÍTULO DE CONQUISTAS</span>
         <h2>Lançar novo boletim</h2>
         <p>Informe as médias finais de cada disciplina. Nós cuidamos dos cálculos.</p>
     </div>
@@ -23,43 +24,61 @@
         <form asp-controller="Boletins" asp-action="Boletins" method="post">
             <div asp-validation-summary="All" class="text-danger" role="alert"></div>
             <div class="row g-3">
-                <div class="col-md-6"><label asp-for="FilhaId">Filha</label><select asp-for="FilhaId" class="form-select"
-                                                                                    required>
+                <div class="col-md-6">
+                    <label asp-for="FilhaId">Filha</label><select asp-for="FilhaId" class="form-select"
+                                                              required>
                     <option value="">Selecione</option>@foreach(var d in filhas){
                     <option value="@d.Id">@d.Nome</option>
                 }
-            </select></div>
-            <div class="col-6 col-md-3"><label asp-for="Ano">Ano</label><input asp-for="Ano" class="form-control"
-                                                                                   min="2020" max="2100" required /></div>
-                <div class="col-6 col-md-3"><label asp-for="Numero">Semestre</label><select asp-for="Numero"
-                                                                                            class="form-select">
-                    <option value="1">1º semestre</option>
-                    <option value="2">2º semestre</option>
-                </select></div>
-            </div>
-            <div class="nota-cabecalho">
-                <h3>Notas por disciplina</h3><span>De 0 a 10</span>
-            </div>
-            <div id="linhas-notas">@for(var i=0;i<disciplinas.Length;i++){
-                <div class="nota-linha"><input
-                    class="form-control" name="Disciplinas" aria-label="Disciplina" placeholder="Disciplina"
-                    value="@disciplinas[i]" required minlength="2" maxlength="100" /><input
-                    class="form-control nota-valor" name="Valores" aria-label="Nota de @disciplinas[i]"
-                    placeholder="0,00" inputmode="decimal" value="@(Model.Valores.ElementAtOrDefault(i))"
-                    required /><button type="button" class="icone-botao remover-disciplina"
-                                       aria-label="Remover disciplina"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button></div>
+            </select>
+        </div>
+        <div class="col-6 col-md-3">
+            <label asp-for="Ano">Ano</label><input asp-for="Ano" class="form-control"
+                                                   min="2020" max="2100" required />
+        </div>
+        <div class="col-6 col-md-3">
+            <label asp-for="Numero">Semestre</label><select asp-for="Numero"
+                                                        class="form-select">
+            <option value="1">1º semestre</option>
+            <option value="2">2º semestre</option>
+        </select>
+    </div>
+</div>
+<div class="nota-cabecalho">
+    <h3>Notas por disciplina</h3><span>De 0 a 10</span>
+</div>
+<div id="linhas-notas">
+    @for (var i = 0; i < disciplinas.Length; i++)
+    {
+        <div class="nota-linha">
+            <input class="form-control" name="Disciplinas" aria-label="Disciplina" placeholder="Disciplina"
+                   value="@disciplinas[i]" required minlength="2" maxlength="100" /><input class="form-control nota-valor" name="Valores" aria-label="Nota de @disciplinas[i]"
+                                                                                    placeholder="0,00" inputmode="decimal" value="@(Model.Valores.ElementAtOrDefault(i))"
+                                                                                    required /><button type="button" class="icone-botao remover-disciplina"
+                           aria-label="Remover disciplina">
+            <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+        </button>
+    </div>
+}
+</div>
+<button class="texto-botao" type="button" id="adicionar-disciplina">
+    <i class="fa-solid fa-plus"
+       aria-hidden="true"></i> Adicionar disciplina
+</button>
+<div class="informacao-mensagem mt-4">
+    <i class="fa-solid fa-calculator" aria-hidden="true"></i>
+    <p>
+        A média geral é a média aritmética das disciplinas, arredondada para duas casas decimais. A recompensa
+        segue as regras vigentes.
+    </p>
+</div>
+<div class="formulario-acoes">
+    <a class="btn btn-light" asp-controller="Inicio" asp-action="Inicio">Cancelar</a><button class="btn btn-primary">
+    Salvar boletim <i class="fa-solid fa-arrow-right"
+                      aria-hidden="true"></i>
+</button>
+</div>
+</form>
                 }
-            </div>
-            <button class="texto-botao" type="button" id="adicionar-disciplina"><i class="fa-solid fa-plus"
-                                                                                       aria-hidden="true"></i> Adicionar disciplina</button>
-                <div class="informacao-mensagem mt-4"><i class="fa-solid fa-calculator" aria-hidden="true"></i>
-                    <p>A média geral é a média aritmética das disciplinas, arredondada para duas casas decimais. A recompensa
-                        segue as regras vigentes.</p>
-                    </div>
-                    <div class="formulario-acoes"><a class="btn btn-light" asp-controller="Inicio" asp-action="Inicio">Cancelar</a><button
-                        class="btn btn-primary">Salvar boletim <i class="fa-solid fa-arrow-right"
-                                                                  aria-hidden="true"></i></button></div>
-                    </form>
-                }
-            </section>
+</section>
 

@@ -205,3 +205,16 @@ footer > span:last-child { font-size: 10px; }
 }
 
 
+
+/* Campos e formul?rios sem sombra, incluindo foco e valida??o. */
+form, .formulario-cartao, .acesso-cartao,
+input, select, textarea, .form-control, .form-select, .form-check-input,
+input:focus, select:focus, textarea:focus,
+.form-control:focus, .form-select:focus, .form-check-input:focus,
+.was-validated .form-control:focus, .was-validated .form-select:focus,
+.form-control.is-valid:focus, .form-control.is-invalid:focus,
+.form-select.is-valid:focus, .form-select.is-invalid:focus {
+    box-shadow: none !important;
+}
+#conteudo[aria-busy="true"] { opacity: .65; cursor: progress; }
+#conteudo:focus { outline: none; }
