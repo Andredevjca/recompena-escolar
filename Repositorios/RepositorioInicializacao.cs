@@ -13,10 +13,10 @@ public class RepositorioInicializacao(IConfiguration configuracao, IWebHostEnvir
     public async Task InicializarAsync()
     {
         var cadeiaConexao = configuracao.GetConnectionString("MySql");
-        if (string.IsNullOrWhiteSpace(cadeiaConexao)) throw new InvalidOperationException("Configure ConnectionStrings:MySql ou ative ModoDemonstracao no ambiente Development.");
+        if (string.IsNullOrWhiteSpace(cadeiaConexao)) throw new InvalidOperationException("Configure ConnectionStrings:MySql.");
         var configuracoes = new MySqlConnectionStringBuilder(cadeiaConexao);
         var nomeBanco = configuracoes.Database;
-        if (!Regex.IsMatch(nomeBanco, "^[a-zA-Z0-9_]+$")) throw new InvalidOperationException("Nome de banco inválido.");
+        if (!Regex.IsMatch(nomeBanco, "^[a-zA-Z0-9_]{1,64}$")) throw new InvalidOperationException("Nome de banco inválido.");
         configuracoes.Database = "";
         await using (var servidor = new MySqlConnection(configuracoes.ConnectionString))
         {
@@ -25,12 +25,24 @@ public class RepositorioInicializacao(IConfiguration configuracao, IWebHostEnvir
         }
         await using var conexao = banco.CriarConexao();
         await conexao.OpenAsync();
-        await AtualizadorEstrutura.TraduzirColunasAsync(conexao);
-        var estrutura = await File.ReadAllTextAsync(Path.Combine(ambiente.ContentRootPath, "Dados", "estrutura.sql"));
-        await conexao.ExecuteAsync(estrutura);
-        await AtualizadorEstrutura.AmpliarSemestresAsync(conexao);
-        await conexao.ExecuteAsync("INSERT INTO usuarios (Nome,Email,SenhaHash,Perfil) VALUES (@Nome,@Email,@SenhaHash,'Administrador') ON DUPLICATE KEY UPDATE Id=Id",
-            new { Nome = "André da Silva Ramos", Email = "admin@admin.com", SenhaHash = Senhas.Gerar("admin@admin.com", configuracao["SenhaAdministradorInicial"] ?? "admin") });
-        await conexao.ExecuteAsync("INSERT IGNORE INTO regras_recompensa (MediaMinima,Valor) VALUES (0,0),(7,100),(8,180),(9,250),(10,300)");
+        var nomeBloqueio = await conexao.ExecuteScalarAsync<string>("SELECT CONCAT('escolar:inicio:', LEFT(SHA2(DATABASE(), 256), 40))");
+        if (await conexao.ExecuteScalarAsync<int?>("SELECT GET_LOCK(@Nome,60)", new { Nome = nomeBloqueio }, commandTimeout: 65) != 1)
+            throw new InvalidOperationException("Não foi possível obter o bloqueio para inicializar o banco.");
+        try
+        {
+            await AtualizadorEstrutura.TraduzirColunasAsync(conexao);
+            var estrutura = await File.ReadAllTextAsync(Path.Combine(ambiente.ContentRootPath, "Dados", "estrutura.sql"));
+            await conexao.ExecuteAsync(estrutura);
+            await AtualizadorEstrutura.AmpliarSemestresAsync(conexao);
+            await using var transacao = await conexao.BeginTransactionAsync();
+            await conexao.ExecuteAsync("INSERT INTO usuarios (Nome,Email,SenhaHash,Perfil) VALUES (@Nome,@Email,@SenhaHash,'Administrador') ON DUPLICATE KEY UPDATE Id=Id",
+                new { Nome = "André da Silva Ramos", Email = "admin@admin.com", SenhaHash = Senhas.Gerar("admin@admin.com", configuracao["SenhaAdministradorInicial"] ?? "admin") }, transacao);
+            await conexao.ExecuteAsync("INSERT IGNORE INTO regras_recompensa (MediaMinima,Valor) VALUES (0,0),(7,100),(8,180),(9,250),(10,300)", transaction: transacao);
+            await transacao.CommitAsync();
+        }
+        finally
+        {
+            await conexao.ExecuteScalarAsync<int?>("SELECT RELEASE_LOCK(@Nome)", new { Nome = nomeBloqueio });
+        }
     }
 }

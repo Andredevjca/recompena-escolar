@@ -405,24 +405,6 @@ main#conteudo {
     margin: 0 auto
 }
 
-.demonstracao-faixa {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 14px;
-    color: #78869c;
-    font-size: 10px;
-    letter-spacing: .1px;
-    gap: 8px
-}
-
-    .demonstracao-faixa i {
-        margin-right: 5px
-    }
-
-    .demonstracao-faixa small {
-        font-size: 9px
-    }
-
 .destaque {
     background: #edf1f7;
     border-radius: 14px;
@@ -1710,27 +1692,6 @@ footer {
         margin-left: 15px
     }
 
-.acesso-demonstracao {
-    display: flex;
-    gap: 12px;
-    background: #f4f6fa;
-    border: 1px solid #e9edf4;
-    border-radius: 9px;
-    padding: 16px;
-    margin-top: 25px;
-    color: #8290a6;
-    font-size: 10px;
-    line-height: 1.8
-}
-
-    .acesso-demonstracao > i {
-        margin-top: 4px
-    }
-
-    .acesso-demonstracao strong, .acesso-demonstracao span {
-        display: block
-    }
-
 .acesso-legenda {
     text-align: center;
     margin-top: 25px;
@@ -2140,14 +2101,6 @@ footer {
         min-width: 28px
     }
 
-    .demonstracao-faixa {
-        font-size: 8px
-    }
-
-        .demonstracao-faixa small {
-            display: none
-        }
-
     .destaque {
         min-height: 310px
     }
@@ -2431,10 +2384,6 @@ footer {
     .acesso-rodape {
         bottom: 22px;
         font-size: 8px
-    }
-
-    .acesso-demonstracao {
-        font-size: 10px
     }
 }
 

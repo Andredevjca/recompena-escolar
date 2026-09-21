@@ -10,7 +10,6 @@ public class ModeloPainel
     public List<Boletim> Boletins { get; set; } = [];
     public List<RegraRecompensa> Regras { get; set; } = [];
     public int SemestreSelecionadoId { get; set; }
-    public bool Demonstracao { get; set; }
     public Semestre? SemestreSelecionado => Semestres.FirstOrDefault(x => x.Id == SemestreSelecionadoId);
     public IEnumerable<Boletim> BoletinsAtuais => Boletins.Where(x => x.SemestreId == SemestreSelecionadoId);
     public decimal Total => BoletinsAtuais.Sum(x => x.Valor);

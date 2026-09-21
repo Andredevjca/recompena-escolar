@@ -63,7 +63,6 @@
         </div>
     </header>
     <main id="conteudo" tabindex="-1">
-        @if(painel.Demonstracao){<div class="demonstracao-faixa"><span><i class="fa-solid fa-flask" aria-hidden="true"></i> Ambiente de demonstração</span><small>Dados ilustrativos • alterações duram até reiniciar</small></div>}
         @if(TempData["Sucesso"] is string sucesso){<div class="alert alert-success alert-dismissible fade show" role="status">@sucesso<button class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button></div>}
         @if(TempData["Erro"] is string erro){<div class="alert alert-danger" role="alert">@erro</div>}
         @RenderBody()

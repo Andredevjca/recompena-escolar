@@ -15,14 +15,12 @@ public class ContaController(IServicoConta autenticacao) : Controller
     {
         if (User.Identity?.IsAuthenticated == true) return RedirectToAction("Inicio", "Inicio");
         ViewBag.UrlRetorno = urlRetorno;
-        ViewBag.Demonstracao = autenticacao.ModoDemonstracao;
         return View(new DadosAcesso());
     }
     [HttpPost, EnableRateLimiting("acesso")]
     public async Task<IActionResult> Entrar(DadosAcesso dados, string? urlRetorno)
     {
         ViewBag.UrlRetorno = urlRetorno;
-        ViewBag.Demonstracao = autenticacao.ModoDemonstracao;
         if (!ModelState.IsValid) return View(dados);
         var usuario = await autenticacao.AutenticarAsync(dados);
         if (usuario == null) { ModelState.AddModelError("", "E-mail ou senha incorretos."); return View(dados); }

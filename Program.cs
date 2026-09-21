@@ -8,9 +8,9 @@ using RecompensaEscolar.Dependencias;
 
 var construtor = WebApplication.CreateBuilder(args);
 construtor.Configuration.AddJsonFile("appsettings.Local.json", optional: true).AddEnvironmentVariables();
-// Na demonstração, usuários e cookies compartilham o mesmo ciclo de vida em memória.
-if (construtor.Environment.IsDevelopment() && construtor.Configuration.GetValue<bool>("ModoDemonstracao"))
-    construtor.Services.AddDataProtection().UseEphemeralDataProtectionProvider();
+var protecao = construtor.Services.AddDataProtection().SetApplicationName("RecompensaEscolar")
+    .PersistKeysToFileSystem(new DirectoryInfo(Path.Combine(construtor.Environment.ContentRootPath, "Dados", "Chaves")));
+if (OperatingSystem.IsWindows()) protecao.ProtectKeysWithDpapi();
 construtor.Services.AddControllersWithViews(opcoes =>
 {
     opcoes.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());

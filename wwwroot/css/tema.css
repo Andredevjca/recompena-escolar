@@ -66,8 +66,6 @@ body { font-family: var(--bs-body-font-family); font-size: var(--tamanho-fonte);
 .semestre-seletor { padding: 6px 9px; border-radius: 4px; border-color: #d7e0ea; }
 .semestre-seletor select { font-size: 12px; }
 main#conteudo { padding: 24px 24px 0; }
-.demonstracao-faixa { font-size: 11px; margin-bottom: 16px; }
-.demonstracao-faixa small { font-size: 10px; }
 .cartao { border: 0; border-radius: var(--raio); box-shadow: var(--sombra-cartao); }
 .cartao-cabecalho { padding: 18px 20px 15px; }
 .cartao-cabecalho h2, .secao-cabecalho h2 { font-size: 14px; }

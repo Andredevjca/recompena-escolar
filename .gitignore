@@ -50,3 +50,6 @@ logs/
 .DS_Store
 Thumbs.db
 Desktop.ini
+
+# Chaves locais de protecao dos cookies
+Dados/Chaves/

@@ -7,7 +7,6 @@ namespace RecompensaEscolar.Servicos;
 
 public class ServicoConta(IRepositorioConta repositorio) : IServicoConta
 {
-    public bool ModoDemonstracao => repositorio.ModoDemonstracao;
 
     public async Task<UsuarioAutenticado?> AutenticarAsync(DadosAcesso dados)
     {

@@ -290,14 +290,6 @@ body.acesso-corpo {
 .acesso-corpo .marca small { font-size: 11px; }
 .acesso-corpo .acesso-cartao h1 { line-height: 1.5; }
 .acesso-corpo .acesso-secundario h2 { line-height: 1.6; }
-.acesso-corpo .demonstracao-credenciais {
-    display: flex; align-items: flex-start; gap: 10px;
-    background: #f3f5f8; color: #6b7c90; border-radius: 4px;
-    padding: 12px; margin-top: 20px; font-size: 11px;
-}
-.acesso-corpo .demonstracao-credenciais > i { margin-top: 3px; }
-.acesso-corpo .demonstracao-credenciais strong,
-.acesso-corpo .demonstracao-credenciais span { display: block; line-height: 1.8; }
 .acesso-corpo .acesso-lembrar input { margin: 0; }
 .acesso-corpo .acesso-recursos i { width: 15px; text-align: center; }
 

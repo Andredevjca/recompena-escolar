@@ -2,10 +2,8 @@
 
 namespace RecompensaEscolar.Infraestrutura;
 
-public class Banco(IConfiguration configuracao, IWebHostEnvironment ambiente)
+public class Banco(IConfiguration configuracao)
 {
-    public bool ModoDemonstracao =>
-        ambiente.IsDevelopment() && configuracao.GetValue<bool>("ModoDemonstracao");
 
     public MySqlConnection CriarConexao()
     {
